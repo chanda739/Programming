@@ -1,24 +1,32 @@
 class Solution {
 public:
-    int CountOccurence(int a, vector<int>& nums){
-        int count = 0;
-        for(int i=0;i<nums.size();i++)
-            if(nums[i]<=a)
-                count++;
-        return count;
-    }
     int findDuplicate(vector<int>& nums) {
-        int low = 1, high = nums.size()-1, res = 0;
-        while(low<=high){
-            int mid = low + (high - low)/2;
-            int n = CountOccurence(mid, nums);
-            if(n>mid){
-                res = mid;
-                high = mid-1;
-            }else{
-                low = mid + 1;
-            }
-        }
+        /*
+        1. insert elements to set and return element if it is found in set O(n) TC and O(n) SC
+        2. Same can be done using map
+        3. As given element are in range[1,n], replace element at ith index to i+1 and traverse again
+        4. XOR all array elements with elements in range[1,n]. Doesn't work as a element can repeat multiple times
+        */
+       /* int res = 0, i=0;
+        for(int i=0;i<nums.size();i++)
+            res = res ^ nums[i] ^ i;
         return res;
+        */
+        int slow = nums[0], fast = nums[0];
+        do{
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        }while(slow!=fast);
+        
+        slow = nums[0];
+        while(slow!=fast){
+             slow = nums[slow];
+            fast = nums[fast];
+        }
+        return fast;
     }
 };
+
+/***
+Floyd's Tortoise and Hare (Cycle Detection)
+**/
