@@ -11,25 +11,22 @@
  */
 class Solution {
 public:
-    int sum = 0;
-    int deepestLevel = 0;
-    void DeepestSumLeaves(TreeNode* root, int level){
+   void LeavesSum(TreeNode* root, int level, int &sum,int &ml){
         if(root==nullptr)
             return;
-        if(level > deepestLevel){
+        if(ml<level){
+            ml = level;
             sum = 0;
-            deepestLevel = level;
         }
-        if(level == deepestLevel){
-            sum+=root->val;
+        if(root->left==nullptr && root->right==nullptr){
+            if(level==ml)sum+=root->val;
         }
-       DeepestSumLeaves(root->left,level+1);
-       DeepestSumLeaves(root->right,level+1);
+        LeavesSum(root->left, level+1,sum,ml);
+        LeavesSum(root->right, level+1,sum,ml);
     }
     int deepestLeavesSum(TreeNode* root) {
-        if(root==nullptr)
-            return 0;
-        DeepestSumLeaves(root,0);
+        int sum = 0,level = 0,ml=0;
+        LeavesSum(root,level,sum,ml);
         return sum;
     }
 };
